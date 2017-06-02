@@ -5,7 +5,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,16 +15,36 @@ import android.widget.TextView;
  * Created by Abhey Rana on 02-06-2017.
  */
 
-public class NewsSourceAdapter {
+public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.NewsSourceViewHolder> {
 
     private static String newsSourceName[];
     private static Bitmap newsSourceIcon[];
     private static Context context;
 
+    private static final int MAX_NEWS_SOURCE = 58;
+
     public NewsSourceAdapter(Context context){
         NewsSourceAdapter.context = context;
         newsSourceName = getNewsSourceName();
         newsSourceIcon = getNewsSourceIcon();
+    }
+
+    @Override
+    public NewsSourceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.news_source_item,parent,false);
+        NewsSourceViewHolder holder = new NewsSourceViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(NewsSourceViewHolder holder, int position) {
+        holder.bind(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return MAX_NEWS_SOURCE;
     }
 
     class NewsSourceViewHolder extends RecyclerView.ViewHolder{
@@ -37,14 +59,15 @@ public class NewsSourceAdapter {
         }
 
         public void bind(int Index){
-
+            imageView.setImageBitmap(newsSourceIcon[Index]);
+            textView.setText(newsSourceName[Index]);
         }
 
     }
 
     public static String[] getNewsSourceName(){
         
-        String source[] = new String[58];
+        String source[] = new String[MAX_NEWS_SOURCE];
         
         source[0]  = "ABC News";
         source[1]  = "Al Jazeera English";
@@ -110,7 +133,7 @@ public class NewsSourceAdapter {
 
     public static Bitmap[] getNewsSourceIcon(){
         
-        Bitmap bitmap[] = new Bitmap[58];
+        Bitmap bitmap[] = new Bitmap[MAX_NEWS_SOURCE];
         Resources resource = context.getResources();
         
         bitmap[0]  = BitmapFactory.decodeResource(resource,R.drawable.abc_news_au);
