@@ -41,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
             if(input != null){
                 BufferedReader br = new BufferedReader(new InputStreamReader(input));
                 String read;
-                while((read = br.readLine()) != null)
-                    textView.append(read+"\n");
+                while((read = br.readLine()) != null) {
+                    textView.append(read + "\n");
+                }
             }
 
         } catch (FileNotFoundException e) {
