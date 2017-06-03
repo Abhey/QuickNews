@@ -1,5 +1,6 @@
 package me.abheyrana.quicknews;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -9,7 +10,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,27 +32,64 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
+    private ProgressBar progressBar;
+    private static URL url[] = new URL[58];
+    private static int sourceCount;
+    private static final String DEBUG_TAG = "QuickNewsTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView =  (TextView) findViewById(R.id.tv_demo);
+        progressBar = (ProgressBar) findViewById(R.id.pb_loader);
         String fileName = "NewsSource";
         try {
             FileInputStream input = openFileInput(fileName);
             if(input != null){
                 BufferedReader br = new BufferedReader(new InputStreamReader(input));
                 String read;
+                int k = 0;
                 while((read = br.readLine()) != null) {
-                    textView.append(read + "\n");
+                    url[k++] = NetworkUtils.buildURL(read);
                 }
+                sourceCount = k;
+                //new LoadData().execute(url[0]);
+                Log.d(DEBUG_TAG,url[0].toString());
             }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (java.io.IOException e){
             e.printStackTrace();
+        }
+    }
+
+    public class LoadData extends AsyncTask<URL,Void,String>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            try {
+                return NetworkUtils.getResponseFromHTTPUrlConnection(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressBar.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.VISIBLE);
+            textView.append(s);
         }
     }
 

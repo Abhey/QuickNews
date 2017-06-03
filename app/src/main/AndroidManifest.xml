@@ -17,17 +17,16 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Quick News"
             android:theme="@style/Theme.AppCompat.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".NewsSourceSelection"
             android:label="Select Atleast 10 News Sources" />
+        <activity android:name=".DisplayNews"></activity>
     </application>
 
 </manifest>
