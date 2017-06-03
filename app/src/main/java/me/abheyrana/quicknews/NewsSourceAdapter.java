@@ -12,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 /**
  * Created by Abhey Rana on 02-06-2017.
  */
@@ -226,8 +231,95 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
         return bitmap;
     }
 
+    public String getSelectedNewsSourceParam(int index){
+
+        index ++;
+
+        switch(index){
+            case  1: return "abc-news-au";
+            case  2: return "al-jazeera-english";
+            case  3: return "ars-technica";
+            case  4: return "associated-press";
+            case  5: return "bbc-news";
+            case  6: return "bbc-sports";
+            case  7: return "bloomberg";
+            case  8: return "breitbart";
+            case  9: return "business-insider";
+            case 10: return "business-insider-uk";
+            case 11: return "buzzfeed";
+            case 12: return "cnbc";
+            case 13: return "cnn";
+            case 14: return "daily-mail";
+            case 15: return "engadget";
+            case 16: return "entertainment-weekly";
+            case 17: return "espn";
+            case 18: return "espn-cric-info";
+            case 19: return "financial-times";
+            case 20: return "fortune";
+            case 21: return "four-four-two";
+            case 22: return "fox-sports";
+            case 23: return "google-news";
+            case 24: return "ign";
+            case 25: return "independent";
+            case 26: return "mashable";
+            case 27: return "metro";
+            case 28: return "mirror";
+            case 29: return "mtv-news";
+            case 30: return "mtv-news-uk";
+            case 31: return "national-geographic";
+            case 32: return "new-scientist";
+            case 33: return "new-york-magazine";
+            case 34: return "newsweek";
+            case 35: return "nfl-news";
+            case 36: return "polygon";
+            case 37: return "recode";
+            case 38: return "reddit-r-all";
+            case 39: return "reuters";
+            case 40: return "talksport";
+            case 41: return "techcrunch";
+            case 42: return "techradar";
+            case 43: return "the-economist";
+            case 44: return "the-gaurdian-au";
+            case 45: return "the-gaurdian-uk";
+            case 46: return "the-hindu";
+            case 47: return "the-huffington-post";
+            case 48: return "the-lad-bible";
+            case 49: return "the-new-york-times";
+            case 50: return "the-next-web";
+            case 51: return "the-sports-bible";
+            case 52: return "the-telegraph";
+            case 53: return "the-times-of-india";
+            case 54: return "the-verge";
+            case 55: return "the-wall-street-journal";
+            case 56: return "the-washington-post";
+            case 57: return "time";
+            case 58: return "usa-today";
+            default : return "";
+        }
+
+    }
+
     public int getSelectedNewsSourceCount(){
         return newsSourceCount;
+    }
+
+    public void saveNewsSources(){
+        String fileName = "NewsSource";
+        try {
+            FileOutputStream out = context.openFileOutput(fileName,Context.MODE_PRIVATE);
+            for(int i=0;i<58;i++){
+                if(counter[i] == 1){
+                    String str = getSelectedNewsSourceParam(i+1) + "\n";
+                    out.write(str.getBytes());
+                }
+            }
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (java.io.IOException e){
+            e.printStackTrace();
+        }
     }
 
 }

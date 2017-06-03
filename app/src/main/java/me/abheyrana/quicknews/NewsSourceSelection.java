@@ -34,6 +34,7 @@ public class NewsSourceSelection extends AppCompatActivity {
                     Toast.makeText(NewsSourceSelection.this, "Please Select " +(10 - newsSourceAdapter.getSelectedNewsSourceCount()) + " More Sources", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    newsSourceAdapter.saveNewsSources();
                     Toast.makeText(NewsSourceSelection.this, "Ready to roll", Toast.LENGTH_SHORT).show();
                 }
             }
