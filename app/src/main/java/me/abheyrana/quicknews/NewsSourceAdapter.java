@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Abhey Rana on 02-06-2017.
@@ -20,6 +21,8 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
     private static String newsSourceName[];
     private static Bitmap newsSourceIcon[];
     private static Context context;
+    private int  counter [];
+    private int newsSourceCount;
 
     private static final int MAX_NEWS_SOURCE = 58;
 
@@ -27,6 +30,10 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
         NewsSourceAdapter.context = context;
         newsSourceName = getNewsSourceName();
         newsSourceIcon = getNewsSourceIcon();
+        counter = new int[58];
+        for(int i = 0; i < 58 ; i++)
+            counter[i] = 0;
+        newsSourceCount = 0;
     }
 
     @Override
@@ -47,7 +54,7 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
         return MAX_NEWS_SOURCE;
     }
 
-    class NewsSourceViewHolder extends RecyclerView.ViewHolder{
+    class NewsSourceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView imageView;
         private TextView textView;
@@ -56,11 +63,32 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.iv_source_icon);
             textView = (TextView) itemView.findViewById(R.id.tv_source_text);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(int Index){
             imageView.setImageBitmap(newsSourceIcon[Index]);
             textView.setText(newsSourceName[Index]);
+            if(counter[Index] == 0)
+                textView.setBackgroundResource(R.color.cardview_light_background);
+            else
+                textView.setBackgroundResource(R.color.black_overlay);
+        }
+
+        @Override
+        public void onClick(View view) {
+            // Write code for checking if a view is selected or not ........
+            int index = getAdapterPosition();
+            if(counter[index] == 0){
+                textView.setBackgroundResource(R.color.black_overlay);
+                counter[index] = 1;
+                newsSourceCount ++;
+            }
+            else{
+                textView.setBackgroundResource(R.color.cardview_light_background);
+                counter[index] = 0;
+                newsSourceCount --;
+            }
         }
 
     }
@@ -196,6 +224,10 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
         bitmap[57] = BitmapFactory.decodeResource(resource,R.drawable.usa_today);
         
         return bitmap;
+    }
+
+    public int getSelectedNewsSourceCount(){
+        return newsSourceCount;
     }
 
 }
