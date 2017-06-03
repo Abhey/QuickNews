@@ -3,7 +3,10 @@ package me.abheyrana.quicknews;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class DisplayNews extends AppCompatActivity {
 
@@ -19,9 +22,20 @@ public class DisplayNews extends AppCompatActivity {
         Intent intent = getIntent();
         String url = intent.getStringExtra("URL");
 
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.getSettings().setUseWideViewPort(true);
-        webview.getSettings().setDomStorageEnabled(true);
+        webview.setWebViewClient(new WebViewClient());
+
+        WebSettings webSettings = webview.getSettings();
+
+
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setSaveFormData(true);
+        webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         webview.loadUrl(url);
     }

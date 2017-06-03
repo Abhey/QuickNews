@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 sourceCount = k;
                 //new LoadData().execute(url[0]);
+                Intent intent = new Intent(this,DisplayNews.class);
+                intent.putExtra("URL","http://gadgets.ndtv.com/360daily/news/oneplus-5-nokia-android-phones-india-moto-c-price-1707311");
+                startActivity(intent);
                 Log.d(DEBUG_TAG,url[0].toString());
             }
 
