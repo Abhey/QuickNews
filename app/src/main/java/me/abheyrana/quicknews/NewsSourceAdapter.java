@@ -10,12 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 /**
  * Created by Abhey Rana on 02-06-2017.
@@ -309,7 +305,7 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
             FileOutputStream out = context.openFileOutput(fileName,Context.MODE_PRIVATE);
             for(int i=0;i<58;i++){
                 if(counter[i] == 1){
-                    String str = getSelectedNewsSourceParam(i+1) + "\n";
+                    String str = getSelectedNewsSourceParam(i) + "\n";
                     out.write(str.getBytes());
                 }
             }

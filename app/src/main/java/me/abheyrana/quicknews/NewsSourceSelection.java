@@ -1,5 +1,8 @@
 package me.abheyrana.quicknews;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,12 +33,21 @@ public class NewsSourceSelection extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(newsSourceAdapter.getSelectedNewsSourceCount() < 10){
-                    Toast.makeText(NewsSourceSelection.this, "Please Select " +(10 - newsSourceAdapter.getSelectedNewsSourceCount()) + " More Sources", Toast.LENGTH_SHORT).show();
+                int count = newsSourceAdapter.getSelectedNewsSourceCount();
+                if(count < 10){
+                    String source = "Sources";
+                    if(count == 9)
+                        source = "Source";
+                    Toast.makeText(NewsSourceSelection.this, "Please Select " +(10 - count) + " More "+source, Toast.LENGTH_SHORT).show();
                 }
                 else{
                     newsSourceAdapter.saveNewsSources();
-                    Toast.makeText(NewsSourceSelection.this, "Ready to roll", Toast.LENGTH_SHORT).show();
+                    SharedPreferences sourceSetting = getSharedPreferences("Source Setting", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sourceSetting.edit();
+                    editor.putBoolean("selected",true);
+                    editor.commit();
+                    startActivity(new Intent(NewsSourceSelection.this,MainActivity.class));
+                    finish();
                 }
             }
         });

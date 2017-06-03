@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">QuickNews</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+</resources>
