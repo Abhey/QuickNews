@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/select_news_sources"
+            android:title="Select News Sources"
+            android:icon="@drawable/ic_select_news_soures"/>
+
+        <item android:id="@+id/read_news_later"
+            android:title="Read Later"
+            android:icon="@drawable/read_later_saved"/>
+
+    </group>
+
+    <item android:title="Other">
+
+        <menu>
+
+            <item android:title="About"
+                android:id="@+id/about"
+                android:icon="@drawable/ic_about" />
+
+            <item android:title="Share"
+                android:id="@+id/share_app"
+                android:icon="@drawable/share_icon"/>
+
+        </menu>
+
+    </item>
+
+</menu>
