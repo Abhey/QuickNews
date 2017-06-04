@@ -26,7 +26,7 @@
         </activity>
         <activity
             android:name=".NewsSourceSelection"
-            android:label="Select Atleast 10 News Sources" />
+            android:label="Select News Sources" />
         <activity
             android:name=".DisplayNews"
             android:label="For You" />

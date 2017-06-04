@@ -4,9 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +36,7 @@ import java.net.URL;
 import java.nio.Buffer;
 import java.util.Scanner;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView textView;
     private ProgressBar progressBar;
@@ -45,6 +51,18 @@ public class MainActivity extends AppCompatActivity {
 
         textView =  (TextView) findViewById(R.id.tv_demo);
         progressBar = (ProgressBar) findViewById(R.id.pb_loader);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         String fileName = "NewsSource";
         try {
@@ -69,6 +87,27 @@ public class MainActivity extends AppCompatActivity {
         } catch (java.io.IOException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        int id = item.getItemId();
+        if(id == R.id.select_news_sources){
+            Intent intent = new Intent(this,NewsSourceSelection.class);
+            startActivity(intent);
+        }
+        if(id == R.id.read_news_later){
+            // TODO(3) Add functionality to this Read Later Section
+        }
+        if(id == R.id.about){
+            Toast.makeText(this,"This functionality will be added soon", Toast.LENGTH_SHORT).show();
+        }
+        if(id == R.id.share_app){
+            Toast.makeText(this,"This functionality will be added soon", Toast.LENGTH_SHORT).show();
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     public class LoadData extends AsyncTask<URL,Void,String>{
@@ -96,6 +135,17 @@ public class MainActivity extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
             textView.setVisibility(View.VISIBLE);
             textView.append(s);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            super.onBackPressed();
         }
     }
 
