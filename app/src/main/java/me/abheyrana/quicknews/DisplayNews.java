@@ -3,6 +3,7 @@ package me.abheyrana.quicknews;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
@@ -27,6 +28,9 @@ public class DisplayNews extends AppCompatActivity {
         setContentView(R.layout.activity_display_news);
 
         readLater = 0;
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         webview = (WebView) findViewById(R.id.wv_diplay_news);
 
@@ -83,6 +87,9 @@ public class DisplayNews extends AppCompatActivity {
         if(id == R.id.show_original){
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
+        }
+        if(id == android.R.id.home){
+            finish();
         }
         return true;
     }
