@@ -13,11 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_demo"
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Welcome to Jolly Old London"
+            android:layout_height="match_parent"
+            android:id="@+id/rv_news_view"
             android:visibility="visible"/>
 
         <ProgressBar

@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -38,8 +39,9 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView textView;
     private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+
     private static URL url[] = new URL[58];
     private static int sourceCount;
     private static final String DEBUG_TAG = "QuickNewsTag";
@@ -49,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView =  (TextView) findViewById(R.id.tv_demo);
         progressBar = (ProgressBar) findViewById(R.id.pb_loader);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_news_view);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if(id == R.id.read_news_later){
             // TODO(3) Add functionality to this Read Later Section
+            Toast.makeText(this,"This functionality will be added soon", Toast.LENGTH_SHORT).show();
         }
         if(id == R.id.about){
             Toast.makeText(this,"This functionality will be added soon", Toast.LENGTH_SHORT).show();
@@ -116,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         protected void onPreExecute() {
             super.onPreExecute();
             progressBar.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -133,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressBar.setVisibility(View.INVISIBLE);
-            textView.setVisibility(View.VISIBLE);
-            textView.append(s);
         }
     }
 
