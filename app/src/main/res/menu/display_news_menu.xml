@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Share Item"
+        android:id="@+id/share_item"
+        app:showAsAction="ifRoom"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
+    <item
+        android:title="Read Later Item"
+        android:icon="@drawable/read_later"
+        android:id="@+id/read_later"
+        app:showAsAction="ifRoom" />
+    <item android:title="Show Original"
+        android:id="@+id/show_original"/>
+
+</menu>
