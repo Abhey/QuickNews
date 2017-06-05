@@ -3,4 +3,15 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="about_app_0">Quick News Android App Version 1.0.1</string>
+    <string name="about_app_1">
+        Quick News is a simple android app that aims at providing latest news from various news sources in a concise manner.
+    </string>
+    <string name="about_app_2">Currently Quick News provide news from 58 news sources around the globe.
+        Our only goal is to make user more and more informed about what\'s going on globally.</string>
+    <string name="about_app_3">Quick News is also an Open Source Project.
+        You can check out the code base at <b>https://github.com/Abhey/QuickNews</b> .
+        So feel free to contribute.</string>
+    <string name="about_app_4">All the bug reports and feature request must be submitted by mailing at-  <b>abheyranacool123.ar@gmail.com</b> .
+        We ensure you that your request will be entertained in future version of app.</string>
 </resources>

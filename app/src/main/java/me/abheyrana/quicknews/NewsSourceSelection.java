@@ -58,7 +58,6 @@ public class NewsSourceSelection extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override

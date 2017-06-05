@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/news_app_icon1"
         android:supportsRtl="true"
         android:theme="@style/RanaTheme">
-        <activity android:name=".MainActivity"
-            android:theme="@style/RanaNoActionBar"/>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/RanaNoActionBar" />
         <activity
             android:name=".SplashScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -30,6 +31,9 @@
         <activity
             android:name=".DisplayNews"
             android:label="For You" />
+        <activity
+            android:name=".About"
+            android:label="About" />
     </application>
 
 </manifest>

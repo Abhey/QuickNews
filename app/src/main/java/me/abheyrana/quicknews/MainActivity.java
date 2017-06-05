@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this,"This functionality will be added soon", Toast.LENGTH_SHORT).show();
         }
         if(id == R.id.about){
-            Toast.makeText(this,"This functionality will be added soon", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,About.class));
         }
         if(id == R.id.share_app){
             Toast.makeText(this,"This functionality will be added soon", Toast.LENGTH_SHORT).show();
