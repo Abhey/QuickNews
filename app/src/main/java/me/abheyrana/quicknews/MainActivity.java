@@ -12,9 +12,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +25,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -35,13 +41,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.Buffer;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
+    private NewsCardAdapter newsCardAdapter;
 
+    public static ArrayList<News> news_card = new ArrayList<>();
     private static URL url[] = new URL[58];
     private static int sourceCount;
     private static final String DEBUG_TAG = "QuickNewsTag";
@@ -53,6 +62,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         progressBar = (ProgressBar) findViewById(R.id.pb_loader);
         recyclerView = (RecyclerView) findViewById(R.id.rv_news_view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        newsCardAdapter = new NewsCardAdapter(this);
+        recyclerView.setAdapter(newsCardAdapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,10 +92,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     url[k++] = NetworkUtils.buildURL(read);
                 }
                 sourceCount = k;
-                //new LoadData().execute(url[0]);
-                Intent intent = new Intent(this,DisplayNews.class);
-                intent.putExtra("URL","http://gadgets.ndtv.com/360daily/news/oneplus-5-nokia-android-phones-india-moto-c-price-1707311");
-                startActivity(intent);
+                for(int i = 0; i < sourceCount ; i++ ){
+                    new LoadData().execute(url[i]);
+                }
                 Log.d(DEBUG_TAG,url[0].toString());
             }
 
@@ -119,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         protected void onPreExecute() {
             super.onPreExecute();
             progressBar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -127,14 +142,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return NetworkUtils.getResponseFromHTTPUrlConnection(urls[0]);
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
             }
+            return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressBar.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+            JSONObject jsonResponse;
+            try {
+                if(s != null ) {
+                    jsonResponse = new JSONObject(s);
+                    JSONArray jsonArticle = jsonResponse.getJSONArray("articles");
+                    int itemCount = jsonArticle.length();
+                    String title, description, url_to_news, url_to_image;
+                    for (int i = 0; i < itemCount; i++) {
+                        JSONObject article = jsonArticle.getJSONObject(i);
+                        title = article.getString("title");
+                        description = article.getString("description");
+                        url_to_news = article.getString("url");
+                        url_to_image = article.getString("urlToImage");
+                        news_card.add(new News(title, description, url_to_news, url_to_image));
+                        newsCardAdapter.setDataSource(news_card);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
