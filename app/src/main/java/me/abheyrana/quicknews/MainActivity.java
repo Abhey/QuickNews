@@ -1,3 +1,6 @@
+
+//Resolve Progress Bar Bug .....
+
 package me.abheyrana.quicknews;
 
 import android.content.Intent;
@@ -49,11 +52,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private NewsCardAdapter newsCardAdapter;
+    private ImageView imageView;
 
     public static ArrayList<News> news_card = new ArrayList<>();
     private static URL url[] = new URL[58];
     private static int sourceCount;
     private static final String DEBUG_TAG = "QuickNewsTag";
+    private static String fileName = "NewsSource";
+    private static int tempVariable = 1;
+    private static int nullCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         progressBar = (ProgressBar) findViewById(R.id.pb_loader);
         recyclerView = (RecyclerView) findViewById(R.id.rv_news_view);
+        imageView = (ImageView) findViewById(R.id.iv_no_internet);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -81,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String fileName = "NewsSource";
         try {
             FileInputStream input = openFileInput(fileName);
             if(input != null){
@@ -110,7 +117,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         int id = item.getItemId();
         if(id == R.id.select_news_sources){
+            String str = "";
+            try {
+                InputStream inputStream = openFileInput(fileName);
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+                String read = br.readLine();
+                int k = 0;
+                while(k < 58){
+                    if(read != null && NewsSourceAdapter.getSelectedNewsSourceParam(k).compareTo(read) == 0){
+                        read = br.readLine();
+                        str = str + "1";
+                    }
+                    else
+                        str = str + "0";
+                    k++;
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Intent intent = new Intent(this,NewsSourceSelection.class);
+            intent.putExtra("CounterData",str);
             startActivity(intent);
         }
         if(id == R.id.read_news_later){
@@ -132,8 +160,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.INVISIBLE);
+            if(tempVariable == 1) {
+                progressBar.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
@@ -149,8 +179,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressBar.setVisibility(View.INVISIBLE);
-            recyclerView.setVisibility(View.VISIBLE);
+            if(tempVariable == 1) {
+                progressBar.setVisibility(View.INVISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                tempVariable = 0;
+            }
             JSONObject jsonResponse;
             try {
                 if(s != null ) {
@@ -166,6 +199,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         url_to_image = article.getString("urlToImage");
                         news_card.add(new News(title, description, url_to_news, url_to_image));
                         newsCardAdapter.setDataSource(news_card);
+                    }
+                }
+                else{
+                    nullCount ++;
+                    if(nullCount == sourceCount){
+                        tempVariable = 1;
+                        nullCount = 0;
+                        recyclerView.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        imageView.setVisibility(View.VISIBLE);
                     }
                 }
             } catch (JSONException e) {
@@ -196,6 +239,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(item.getItemId() == R.id.menu_item_refresh) {
             // TODO(1) add logic for selection of refresh menu item ...
             Toast.makeText(this, "Crunching the latest data. Hang tight.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,MainActivity.class));
+            finish();
         }
         return true;
     }

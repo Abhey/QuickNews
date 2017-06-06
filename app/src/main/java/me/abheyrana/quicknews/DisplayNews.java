@@ -1,3 +1,6 @@
+
+//All the work that need to be done in this class file is over . So Closing this file
+
 package me.abheyrana.quicknews;
 
 import android.content.Intent;
@@ -16,7 +19,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 public class DisplayNews extends AppCompatActivity {
 

@@ -27,14 +27,17 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
 
     private static final int MAX_NEWS_SOURCE = 58;
 
-    public NewsSourceAdapter(Context context){
+    public NewsSourceAdapter(Context context,int counter[]){
         NewsSourceAdapter.context = context;
         newsSourceName = getNewsSourceName();
         newsSourceIcon = getNewsSourceIcon();
-        counter = new int[58];
-        for(int i = 0; i < 58 ; i++)
-            counter[i] = 0;
+        this.counter = new int[58];
         newsSourceCount = 0;
+        for(int i = 0; i < 58 ; i++) {
+            this.counter[i] = counter[i];
+            if(counter[i] == 1)
+                newsSourceCount ++;
+        }
     }
 
     @Override
@@ -227,7 +230,7 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
         return bitmap;
     }
 
-    public String getSelectedNewsSourceParam(int index){
+    public static String getSelectedNewsSourceParam(int index){
 
         index ++;
 
@@ -316,6 +319,10 @@ public class NewsSourceAdapter extends RecyclerView.Adapter<NewsSourceAdapter.Ne
         catch (java.io.IOException e){
             e.printStackTrace();
         }
+    }
+
+    public int[] getCounterData(){
+        return this.counter;
     }
 
 }
