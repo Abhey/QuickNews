@@ -1,6 +1,7 @@
 package me.abheyrana.quicknews;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -10,9 +11,11 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class DisplayNews extends AppCompatActivity {
@@ -21,6 +24,7 @@ public class DisplayNews extends AppCompatActivity {
     private ShareActionProvider actionProvider;
     private static String url;
     private static int readLater;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +36,15 @@ public class DisplayNews extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        progressBar = (ProgressBar) findViewById(R.id.pb_display_news);
+
         webview = (WebView) findViewById(R.id.wv_diplay_news);
 
         Intent intent = getIntent();
         url = intent.getStringExtra("URL");
 
-        webview.setWebViewClient(new WebViewClient());
+        webview.setWebViewClient(new NewsWebViewClient());
+        webview.setWebChromeClient(new NewsWebChromeClient());
 
         WebSettings webSettings = webview.getSettings();
 
@@ -98,6 +105,34 @@ public class DisplayNews extends AppCompatActivity {
         if(actionProvider != null){
             actionProvider.setShareIntent(intent);
         }
+    }
+
+    private class NewsWebViewClient extends WebViewClient{
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(0);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view,url);
+            progressBar.setVisibility(View.GONE);
+            progressBar.setProgress(100);
+        }
+
+    }
+
+    private class NewsWebChromeClient extends WebChromeClient{
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            progressBar.setProgress(newProgress);
+        }
+
     }
 
 }

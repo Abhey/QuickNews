@@ -5,11 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="me.abheyrana.quicknews.DisplayNews"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/pb_display_news"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:visibility="invisible"
+        style="@android:style/Widget.ProgressBar.Horizontal" />
 
     <WebView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/wv_diplay_news" />
+        android:layout_height="fill_parent"
+        android:id="@+id/wv_diplay_news"
+        android:visibility="visible"/>
 
 </LinearLayout>
