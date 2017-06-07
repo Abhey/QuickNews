@@ -1,5 +1,6 @@
 
-//Resolve Progress Bar Bug .....
+//Dude you just need to wait if you want to play with screen rotation.
+//I have implemented most the logic from my side let' see how it works.
 
 package me.abheyrana.quicknews;
 
@@ -56,16 +57,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static ArrayList<News> news_card = new ArrayList<>();
     private static URL url[] = new URL[58];
+    private static AsyncTask<URL,Void,String> threadPool[] = new AsyncTask[58];
     private static int sourceCount;
     private static final String DEBUG_TAG = "QuickNewsTag";
     private static String fileName = "NewsSource";
-    private static int tempVariable = 1;
-    private static int nullCount = 0;
+    private static int tempVariable ;
+    private static int nullCount ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialising temporary variables
+        tempVariable = 1;
+        nullCount = 0;
 
         progressBar = (ProgressBar) findViewById(R.id.pb_loader);
         recyclerView = (RecyclerView) findViewById(R.id.rv_news_view);
@@ -100,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 sourceCount = k;
                 for(int i = 0; i < sourceCount ; i++ ){
-                    new LoadData().execute(url[i]);
+                    threadPool[i] =  new LoadData().execute(url[i]);
                 }
                 Log.d(DEBUG_TAG,url[0].toString());
             }
@@ -169,7 +175,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected String doInBackground(URL... urls) {
             try {
-                return NetworkUtils.getResponseFromHTTPUrlConnection(urls[0]);
+                String result =  NetworkUtils.getResponseFromHTTPUrlConnection(urls[0]);
+                if(isCancelled())
+                    return null;
+                else
+                    return result;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -204,8 +214,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 else{
                     nullCount ++;
                     if(nullCount == sourceCount){
-                        tempVariable = 1;
-                        nullCount = 0;
                         recyclerView.setVisibility(View.INVISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);
                         imageView.setVisibility(View.VISIBLE);
@@ -215,6 +223,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 e.printStackTrace();
             }
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            if(tempVariable == 1){
+                progressBar.setVisibility(View.INVISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                tempVariable = 0;
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for(int i = 0; i < sourceCount ; i++)
+            threadPool[i].cancel(true);
     }
 
     @Override
@@ -237,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_item_refresh) {
-            // TODO(1) add logic for selection of refresh menu item ...
             Toast.makeText(this, "Crunching the latest data. Hang tight.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,MainActivity.class));
             finish();

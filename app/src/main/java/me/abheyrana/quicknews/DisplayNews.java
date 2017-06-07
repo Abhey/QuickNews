@@ -1,5 +1,6 @@
 
 //All the work that need to be done in this class file is over . So Closing this file
+//Wait what you still need to implement chaching of webpage for screen rotation.
 
 package me.abheyrana.quicknews;
 
@@ -61,7 +62,8 @@ public class DisplayNews extends AppCompatActivity {
         webSettings.setSaveFormData(true);
         webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
-        webview.loadUrl(url);
+        if(savedInstanceState == null)
+            webview.loadUrl(url);
     }
 
     @Override
@@ -137,4 +139,17 @@ public class DisplayNews extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        webview.saveState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        webview.restoreState(savedInstanceState);
+    }
+
 }
+
