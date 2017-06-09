@@ -7,9 +7,25 @@
     tools:context="me.abheyrana.quicknews.ReadLater"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rv_read_later"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rv_read_later"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/saved_news_later"
+            android:id="@+id/iv_read_later"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+
+    </FrameLayout>
 
 </LinearLayout>

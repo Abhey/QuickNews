@@ -17,7 +17,7 @@ public class About extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         textView = (TextView) findViewById(R.id.tv_hearts);
         textView.setText("Made with ♥ in India");

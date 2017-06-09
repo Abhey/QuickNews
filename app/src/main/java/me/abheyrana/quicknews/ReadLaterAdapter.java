@@ -56,4 +56,12 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.Read
 
     }
 
+    public void swapCursor(Cursor newCursor){
+        if(cursor != null)
+            cursor.close();
+        cursor = newCursor;
+        if(cursor != null)
+            notifyDataSetChanged();
+    }
+
 }

@@ -148,8 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         if(id == R.id.read_news_later){
-            // TODO(3) Add functionality to this Read Later Section
-            Toast.makeText(this,"This functionality will be added soon", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,ReadLater.class));
         }
         if(id == R.id.about){
             startActivity(new Intent(this,About.class));

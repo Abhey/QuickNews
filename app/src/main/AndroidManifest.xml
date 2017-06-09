@@ -34,7 +34,8 @@
         <activity
             android:name=".About"
             android:label="About" />
-        <activity android:name=".ReadLater"></activity>
+        <activity android:name=".ReadLater"
+            android:label="Read Later"/>
     </application>
 
 </manifest>
