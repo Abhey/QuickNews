@@ -73,6 +73,7 @@ public class NewsCardAdapter extends RecyclerView.Adapter<NewsCardAdapter.NewsCa
             intent.putExtra("DESCRIPTION",localNews.getDescription());
             intent.putExtra("URL",localNews.getUrlToNews());
             intent.putExtra("URL_IMAGE",localNews.getUrlToImage());
+            intent.putExtra("STARTER","MainActivity");
             context.startActivity(intent);
         }
     }

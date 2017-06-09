@@ -38,6 +38,8 @@ public class DisplayNews extends AppCompatActivity {
     private static String url;
     private static String url_image;
 
+    private static String starter;
+
     private static int readLater;
     private static long id = -1;
 
@@ -61,6 +63,7 @@ public class DisplayNews extends AppCompatActivity {
         description = intent.getStringExtra("DESCRIPTION");
         url = intent.getStringExtra("URL");
         url_image = intent.getStringExtra("URL_IMAGE");
+        starter = intent.getStringExtra("STARTER");
 
         String selectionClause = NewsContract.NEWS_URL + " = ?" ;
         String condition[] = {url};
@@ -135,14 +138,14 @@ public class DisplayNews extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.read_later){
             if(readLater == 0) {
-                // Here the code for adding article to read list will be presenet
                 item.setIcon(R.drawable.read_later_saved);
                 readLater = 1;
+                Toast.makeText(this,"Added to Read Later", Toast.LENGTH_SHORT).show();
             }
             else{
-                // Here the code for removing article from read list will be present
                 item.setIcon(R.drawable.read_later);
                 readLater = 0;
+                Toast.makeText(this,"Removed from Read Later", Toast.LENGTH_SHORT).show();
             }
         }
         if(id == R.id.show_original){
@@ -208,8 +211,11 @@ public class DisplayNews extends AppCompatActivity {
             deleteNews(id);
         else if(readLater == 1 && id == -1)
             insertNews();
-
+        database.close();
+        if(starter.compareTo("ReadLaterActivity") == 0)
+            startActivity(new Intent(this,ReadLater.class));
         super.onDestroy();
+
     }
 
     private long insertNews(){
