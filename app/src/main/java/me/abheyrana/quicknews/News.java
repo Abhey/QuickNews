@@ -4,7 +4,7 @@ package me.abheyrana.quicknews;
  * Created by Abhey Rana on 03-06-2017.
  */
 
-//Eureka I got it A use of ArrayList will do it. I know it will do it .
+//Eureka I got it A use of ArrayList will do it. I know it will work .
 
 public class News {
 

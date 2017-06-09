@@ -263,8 +263,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_item_refresh) {
             Toast.makeText(this, "Crunching the latest data. Hang tight.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this,MainActivity.class));
-            finish();
         }
         return true;
     }
