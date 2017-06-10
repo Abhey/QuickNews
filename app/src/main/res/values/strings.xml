@@ -3,7 +3,7 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
-    <string name="about_app_0">Quick News Android App Version 1.0.1</string>
+    <string name="about_app_0">Quick News Android App Version v1.0-alpha</string>
     <string name="about_app_1">
         Quick News is a simple android app that aims at providing latest news from various news sources in a concise manner.
     </string>
